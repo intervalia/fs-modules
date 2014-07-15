@@ -1,0 +1,6 @@
+<div class="person-info">
+  <div class="person-info__person-gender {{options.iconSize}}" ng-if=!options.hideIcon>
+    <div class="person-gender__image fs-icon-{{options.iconSize}}-{{person.gender | lowercase}}"></div>
+  </div>
+  <fst-person-vitals data-person="person"></fst-person-vitals>
+</div>
