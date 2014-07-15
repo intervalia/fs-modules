@@ -1,6 +1,6 @@
-angular.module('ngSharedComponents', [])
+angular.module('ngFsComponenets', [])
 
-.directive('fstPersonVitals', ['$compile', function($compile) {
+.directive('fsPersonVitals', ['$compile', function($compile) {
   return {
     restrict: 'E',
     replace: true,
@@ -28,7 +28,7 @@ angular.module('ngSharedComponents', [])
   };
 }])
 
-.directive('fstPersonInfo', function() {
+.directive('fsPersonInfo', function() {
   return {
     restrict: 'E',
     replace: true,
@@ -42,14 +42,14 @@ angular.module('ngSharedComponents', [])
       scope.options.iconSize = scope.options.iconSize || 'medium';
     },
     compile: function(tElement, tAttrs) {
-      // since data-config must be a string, we need to append the attrs string to fst-person-vitals
-      tElement.find('fst-person-vitals').attr('data-config', tAttrs.config);
+      // since data-config must be a string, we need to append the attrs string to fs-person-vitals
+      tElement.find('fs-person-vitals').attr('data-config', tAttrs.config);
       return this.link;
     }
   };
 })
 
-.directive('fstPersonPortrait', function() {
+.directive('fsPersonPortrait', function() {
   return {
     restrict: 'E',
     replace: true,
@@ -62,8 +62,8 @@ angular.module('ngSharedComponents', [])
       scope.options = scope.config() || {};
     },
     compile: function(tElement, tAttrs) {
-      // since data-config must be a string, we need to append the attrs string to fst-person-vitals
-      tElement.find('fst-person-info').attr('data-config', tAttrs.config);
+      // since data-config must be a string, we need to append the attrs string to fs-person-vitals
+      tElement.find('fs-person-info').attr('data-config', tAttrs.config);
       return this.link;
     }
   };
