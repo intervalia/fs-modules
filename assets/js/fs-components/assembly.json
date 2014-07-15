@@ -1,5 +1,6 @@
 {
   "files": [
+    "./module.js",
     "./personRenderer.js"
   ],
   "simpleWrap": true
