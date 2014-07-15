@@ -13,8 +13,21 @@ window.fsComponents = (function(module) {
 
   /**
    * Output a person's vitals (name, lifeSpan, and PID).
-   * @author Steven Lambert <steven.lambert@familysearch.com>
-   * @team tree - tesseract
+   * @param {object} person - Person to render.
+   * @property {string} [person.gender]
+   * @property {string} [person.lifeSpan]
+   * @property {string} [person.fullLifeSpan]
+   * @property {string} [person.id]
+
+   * @param {object} options - How to render the person.
+   * @property {string}  [options.iconSize=medium] - Size of the gender icon (small,medium).
+   * @property {boolean} [options.hideLifeSpan=false] - Hide the lifespan.
+   * @property {string}  [options.lifeSpan=short] - Show the short or the full lifeSpan.
+   * @property {boolean} [options.hideId=false] - Hide the person id.
+   * @property {boolean} [options.openPersonCard=false] - Add a link to open the person card when the name is clicked.
+   * @property {boolean} [options.returnString=false] - Return a DOM string instead of a DOM element.
+   *
+   * @returns {DOMElement|string}
    */
   module.fsPersonVitals = function(person, options) {
     options = $.extend({}, defaultOptions, options);
@@ -46,8 +59,22 @@ window.fsComponents = (function(module) {
 
   /**
    * Output a person's info with their vitals (gender, name, lifeSpan, and PID).
-   * @author Steven Lambert <steven.lambert@familysearch.com>
-   * @team tree - tesseract
+   * @param {object} person - Person to render.
+   * @property {string} [person.gender]
+   * @property {string} [person.lifeSpan]
+   * @property {string} [person.fullLifeSpan]
+   * @property {string} [person.id]
+
+   * @param {object} options - How to render the person.
+   * @property {string}  [options.iconSize=medium] - Size of the gender icon (small,medium).
+   * @property {boolean} [options.hideLifeSpan=false] - Hide the lifespan.
+   * @property {string}  [options.lifeSpan=short] - Show the short or the full lifeSpan.
+   * @property {boolean} [options.hideId=false] - Hide the person id.
+   * @property {boolean} [options.openPersonCard=false] - Add a link to open the person card when the name is clicked.
+   * @property {boolean} [options.returnString=false] - Return a DOM string instead of a DOM element.
+   *
+   * @returns {DOMElement|string}
+   */
    */
   module.fsPersonInfo = function(person, options) {
     options = $.extend({}, defaultOptions, options);
@@ -72,8 +99,22 @@ window.fsComponents = (function(module) {
 
   /**
    * Output a person's portrait with their info (portrait, gender, name, lifeSpan, and PID).
-   * @author Steven Lambert <steven.lambert@familysearch.com>
-   * @team tree - tesseract
+   * @param {object} person - Person to render.
+   * @property {string} [person.gender]
+   * @property {string} [person.lifeSpan]
+   * @property {string} [person.fullLifeSpan]
+   * @property {string} [person.id]
+
+   * @param {object} options - How to render the person.
+   * @property {string}  [options.iconSize=medium] - Size of the gender icon (small,medium).
+   * @property {boolean} [options.hideLifeSpan=false] - Hide the lifespan.
+   * @property {string}  [options.lifeSpan=short] - Show the short or the full lifeSpan.
+   * @property {boolean} [options.hideId=false] - Hide the person id.
+   * @property {boolean} [options.openPersonCard=false] - Add a link to open the person card when the name is clicked.
+   * @property {boolean} [options.returnString=false] - Return a DOM string instead of a DOM element.
+   *
+   * @returns {DOMElement|string}
+   */
    */
   module.fsPersonPortrait = function(person, options) {
     options = $.extend({}, defaultOptions, options);
