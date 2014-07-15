@@ -61,8 +61,8 @@ window.fsComponents = (function(module) {
    * @param {object} obj - Used in place of $scope for parsing.
    */
   module.parseAngular = function(str, obj) {
-    var str = this.formatAngular(str, obj);
-    var $root = $(str)
+    str = this.formatAngular(str, obj);
+    var $root = $(str);
     var nodes = $root.find('*').andSelf();
     var node;
 

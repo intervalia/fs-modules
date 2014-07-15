@@ -75,7 +75,6 @@ window.fsComponents = (function(module) {
    *
    * @returns {DOMElement|string}
    */
-   */
   module.fsPersonInfo = function(person, options) {
     options = $.extend({}, defaultOptions, options);
 
@@ -114,7 +113,6 @@ window.fsComponents = (function(module) {
    * @property {boolean} [options.returnString=false] - Return a DOM string instead of a DOM element.
    *
    * @returns {DOMElement|string}
-   */
    */
   module.fsPersonPortrait = function(person, options) {
     options = $.extend({}, defaultOptions, options);
