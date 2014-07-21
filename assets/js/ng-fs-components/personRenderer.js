@@ -1,10 +1,10 @@
-angular.module('ngFsComponenets', [])
+angular.module('ngFsComponents', [])
 
 .directive('fsPersonVitals', ['$compile', function($compile) {
   return {
     restrict: 'E',
     replace: true,
-    template: templateList.vitals,
+    template: templateList.personVitals,
     scope: {
       person: '=',
       config: '&',
@@ -32,7 +32,7 @@ angular.module('ngFsComponenets', [])
   return {
     restrict: 'E',
     replace: true,
-    template: templateList.info,
+    template: templateList.personInfo,
     scope: {
       person: '=',
       config: '&'
@@ -53,9 +53,30 @@ angular.module('ngFsComponenets', [])
   return {
     restrict: 'E',
     replace: true,
-    template: templateList.portrait,
+    template: templateList.personPortrait,
     scope: {
       person: '=',
+      config: '&'
+    },
+    link: function(scope, element, attrs) {
+      scope.options = scope.config() || {};
+    },
+    compile: function(tElement, tAttrs) {
+      // since data-config must be a string, we need to append the attrs string to fs-person-vitals
+      tElement.find('fs-person-info').attr('data-config', tAttrs.config);
+      return this.link;
+    }
+  };
+})
+
+.directive('fsCoupleInfo', function() {
+  return {
+    restrict: 'E',
+    replace: true,
+    template: templateList.coupleInfo,
+    scope: {
+      husband: '=',
+      wife: '=',
       config: '&'
     },
     link: function(scope, element, attrs) {

@@ -1,0 +1,17 @@
+<div class="person-vitals">
+  <div class="person-vitals__name person-vitals__name--{{person.nameConclusion.details.style | lowercase}}">
+    <span class="person-vitals__name--split">
+      <span class="person-vitals__name-given" ng-bind-html="person.nameConclusion.details.nameForms[0].givenPart" data-test="given-name"></span><br>
+      <span class="person-vitals__name-family" ng-bind-html="person.nameConclusion.details.nameForms[0].familyPart" data-test="family-name"></span>
+    </span>
+    <span class="person-vitals__name-full" ng-bind-html="person.name" data-test="full-name"></span>
+  </div>
+  <div class="person-vitals__person-details">
+    <div class="person-vitals__vitals-container">
+      <span class="person-details__lifeSpan" ng-if="!options.hideLifeSpan" ng-bind-html="(options.lifeSpan === \'long\') ? person.fullLifeSpan : person.lifeSpan" data-test="lifeSpan"></span>
+      <span class="person-details__separator" ng-if="!options.hideLifeSpan && !options.hideId && person.id">&nbsp;•&nbsp;</span>
+      <span class="person-details__id" ng-if="!options.hideId && person.id" data-test="pid">{{person.id}}</span>
+      <span class="person-details__selection-stopper" ng-if="!options.hideLifeSpan || !options.hideId">&#8203;</span>
+    </div>
+  </div>
+</div>
