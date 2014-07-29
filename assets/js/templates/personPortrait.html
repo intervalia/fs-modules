@@ -1,7 +1,7 @@
 <div class="person-info">
   <div class="person-info__person-portrait">
-    <div class="person-portrait__image fs-icon-before-portrait-{{person.gender | lowercase}}">
-      <img src=""/>
+    <div class="person-portrait__portrait fs-icon-before-portrait-{{person.gender | lowercase}}">
+      <img class="person-portrait__image" ng-if="person.portraitUrl" ng-src="{{person.portraitUrl}}" data-test="portrait">
     </div>
   </div>
   <div class="person-info__person-info">

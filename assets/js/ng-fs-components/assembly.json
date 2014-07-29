@@ -1,6 +1,6 @@
 {
   "files": [
-    "./personRenderer.js"
+    "./ngPersonRenderer.js"
   ],
   "simpleWrap": true
 }

@@ -7,9 +7,19 @@
  */
 window.fsComponents = (function(module) {
 
-  // get angular $parse so we can parse angular templates
-  var $injector = angular.injector(['ng']);
-  var $parse = $injector.get('$parse');
+  var $parse;
+  // get angulars $parse so we can parse angular templates
+  if (window.angular && angular.injector) {
+    var $injector = angular.injector(['ng']);
+    $parse = $injector.get('$parse');
+  }
+  // use the isolated angular $parse (fs-components/parser.js)
+  else if (module.parser) {
+    $parse = module.parser;
+  }
+  else {
+    throw new Error('You must include \'fs-components/parser.js\' before \'fs-components.js\' to use this feature without angular.js.');
+  }
   var ngExp = /\{\{.*?\}\}/g;
 
   // default directive options
@@ -37,11 +47,18 @@ window.fsComponents = (function(module) {
       }
 
       this.removeAttr('ng-if');
+    },
+    'ng-src': function(obj) {
+      var attr = this.attr('ng-src');  // this should already be parsed at this point
+
+      this.attr('src', attr);
+
+      this.removeAttr('ng-src');
     }
   };
 
   /**
-   * Auto parse a registered directive from a template.
+   * Parse a registered directive from a template.
    * @param {object} directive - Directive object {restrict, replace, func}.
    * @param {jQuery} $node     - JQuery DOM element that the directive is on.
    * @param {object} object    - Used in place of $scope for parsing.
@@ -92,6 +109,7 @@ window.fsComponents = (function(module) {
    * Convert angular {{expressions}} to their associated value.
    * @param {string} str - Template str to format.
    * @param {object} obj - Used in place of $scope for parsing.
+   * @returns {string} The parsed angular value.
    */
   module.formatAngular = function(str, obj) {
     var matches = str.match(ngExp) || [];
@@ -113,6 +131,7 @@ window.fsComponents = (function(module) {
    * Parse angular directives.
    * @param {string} str - Template str to parse.
    * @param {object} obj - Used in place of $scope for parsing.
+   * @returns {jQueryDom} - A jQuery DOM element.
    */
   module.parseAngular = function(str, obj) {
     str = this.formatAngular(str, obj);
@@ -136,6 +155,7 @@ window.fsComponents = (function(module) {
       for (var j = 0, length = attrs.length; j < length; j++) {
         attr = attrs[j];
 
+        // call ng attribute functions
         if (ngAttrs[attr.nodeName]) {
           ngAttrs[attr.nodeName].call($node, obj);
         }
@@ -154,6 +174,9 @@ window.fsComponents = (function(module) {
   /**
    * Register a new directive parser
    * Taken from http://toddmotto.com/angular-js-dependency-injection-annotation-process/
+   * @param {string} fnName  - The name of the directive in camel case.
+   * @param {array}  fn      - Array of strings for each parameter, last value must be a function.
+   * @param {object} options - The options for the directive {restrict, replace}
    */
   module.registerDirective = function(fnName, fn, options) {
     var $inject;
@@ -168,6 +191,10 @@ window.fsComponents = (function(module) {
     // ensure we have a function
     if (typeof fn !== 'function') {
       throw new Error('Directive ' + fnName + ' is not a function.');
+    }
+    // ensure the directive isn't already defined
+    if (this[fnName]) {
+      throw new Error('Directive ' + fnName + ' is already registered.');
     }
 
     // make the function directly callable

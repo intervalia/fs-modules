@@ -168,6 +168,8 @@ background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz
   overflow: ellipsis;
 }
 
+
+
 .person-info {
   display: table;
   width: 100%;
@@ -214,7 +216,7 @@ background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz
       text-align: center;
     }
 
-    .person-portrait__image {
+    .person-portrait__portrait {
       margin: 0 auto;
     }
 
@@ -250,7 +252,7 @@ background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz
   &--dark {
     color: #ffffff;
 
-    .person-portrait__image {
+    .person-portrait__portrait {
       background-color: #57585a;
       border-color: #6c6d6f;
       box-shadow: none;
@@ -303,7 +305,7 @@ background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz
   width: 85px;
 }
 
-.person-portrait__image {
+.person-portrait__portrait {
   overflow: hidden;
   background-color: #e0e0e0;
   background-position: center;
@@ -316,7 +318,7 @@ background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz
   position: relative;
 }
 
-.person-portrait__image:before {
+.person-portrait__portrait:before {
   content: '';
   position: absolute;
   background-position: inherit;
@@ -325,6 +327,10 @@ background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz
   top: 0;
   height: 100%;
   width: 100%;
+}
+
+.person-portrait__image {
+  position: relative;
 }
 
 .person-info__person-gender {

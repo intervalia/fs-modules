@@ -1,4 +1,4 @@
-angular.module('ngFsComponents', [])
+angular.module('ngFsComponents', ['ngSanitize'])
 
 .directive('fsPersonVitals', ['$compile', function($compile) {
   return {
