@@ -135,74 +135,148 @@ background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz
   background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMiIgYmFzZVByb2ZpbGU9InRpbnkiIGlkPSJBcnQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSI0N3B4IiBoZWlnaHQ9IjUzcHgiIHZpZXdCb3g9IjAgMCA0NyA1MyI+PHBhdGggZmlsbD0iI0JCQkRCRiIgZD0iTTIzLjMxMyw1MS45Yy0xNC41NTgsMC0yMi4xNzUtMi4xNTYtMjIuMTc1LTQuMjg1YzAuMDE2LTAuMTY2LDAuODI3LTMuMTYsMS4zNjgtNS4xMzJjMC4yNzMtMS43MjgsMi4xNjUtMy42NSwzLjY5My00LjMwM2MxLjU2LTAuNjY1LDEwLjI2LTQuNjYxLDEwLjM0Ny00LjcwMWwwLjA1OS0wLjAyNnYtMC4xNDZsLTAuMDgxLTAuMDk5QzYuOTc5LDMxLjMyNiw0LjkzOCwyNi4yMyw0LjY3NywyNS40NDFjMC41MjQtMC4xMDQsMi43MjctMC42NTEsNC4yNzItMi43NThjMS41MTItMi4wNjIsMS45NjQtNC45NTMsMS4zNDItOC41OTVjLTAuMTMtMC43MjItMC4xNTgtMS40MjUtMC4wOS0yLjIxNGMtMC4wNjMtMi40NDMsMC44ODktNC43OTYsMi42ODItNi42MzdjMi40MzYtMi41LDYuMjA3LTMuODc3LDEwLjYxNy0zLjg3N2M0LjQwOCwwLDguMTc2LDEuMzc2LDEwLjYxMSwzLjg3NGMxLjc5MywxLjg0MSwyLjc0NSw0LjE5NCwyLjY4Miw2LjYyOGMwLjA2NiwwLjc0NiwwLjAzMSwxLjQ3LTAuMTA0LDIuMjI1Yy0wLjYyMSwzLjYzNC0wLjE2OSw2LjUyMSwxLjM0Myw4LjU4MmMxLjU1NSwyLjExOCwzLjc3NywyLjY2OCw0LjMwNSwyLjc3MWMtMC4yNjIsMC43ODktMi4zMDcsNS44ODUtMTEuODUxLDcuNzY3bC0wLjA4MSwwLjAxNnYwLjE0NmwwLjA1OSwwLjEwOWMwLjA4OCwwLjA0LDguNzkzLDQuMDM2LDEwLjM1NCw0LjcwMWMxLjU0OSwwLjY2MSwzLjQ2MiwyLjU4NywzLjczLDQuMjkyYzAuNTM2LDEuOTgyLDEuMzM3LDQuOTc4LDEuMzUzLDUuMTQ2YzAsMi4xMjUtNy42MjQsNC4yODEtMjIuMTk0LDQuMjgxSDIzLjMxM3oiLz48L3N2Zz4=') no-repeat;
 }
 
-.person-vitals__name {
+/**
+ * FS Person Vitals
+ */
+.fs-person-vitals__name {
   overflow: ellipsis;
   font-size: $medium-size;
   line-height: $medium-lineHieght;
 }
 
-.person-vitals__name--split {
+.fs-person-vitals__name-full,
+.fs-person-vitals__name-given,
+.fs-person-vitals__name-family {
+  overflow: ellipsis;
+}
+
+.fs-person-vitals__name--split {
   display: none;
 }
 
-.person-vitals__vitals-container {
+.fs-person-details__container {
   clearfix();
 }
 
-.person-details__lifeSpan,
-.person-details__separator,
-.person-details__id,
-.person-details__selection-stopper {
+.fs-person-details__lifeSpan,
+.fs-person-details__separator,
+.fs-person-details__id,
+.fs-person-details__selection-stopper {
   float: left;
   font-size: $small-size;
   line-height: $small-lineHieght;
 }
 
-.person-details__lifeSpan:empty + .person-details__separator {
+.fs-person-details__lifeSpan:empty + .fs-person-details__separator {
   display: none;
 }
 
-.person-vitals__name-full,
-.person-vitals__name-given,
-.person-vitals__name-family {
-  overflow: ellipsis;
-}
 
-
-
-.person-info {
+/**
+ * FS Person Gender
+ */
+.fs-person-gender {
   display: table;
   width: 100%;
   table-layout: fixed;
 
-  &__person-info {
+  .fs-person-vitals {
     display: table-cell;
     vertical-align: middle;
   }
+}
 
-  .person-vitals {
-    display: table-cell;
-    vertical-align: middle;
+.fs-person-gender__container {
+  display: table-cell;
+  width: 0;
+}
+
+.fs-person-gender--small {
+  width: 15px;
+}
+
+.fs-person-gender--medium {
+  vertical-align: middle;
+  width: 30px;
+}
+
+.fs-person-gender__image {
+  vertical-align: middle;
+  display: inline-block;
+  position: relative;
+
+  &[class*=fs-icon-small] {
+    vertical-align: top;
+    margin-top: 7px;
   }
+}
+
+
+/**
+ * FS Person Portrait
+ */
+.fs-person-portrait__container {
+  display: table-cell;
+  width: 85px;
+}
+
+.fs-person-portrait__portrait {
+  overflow: hidden;
+  background-color: #e0e0e0;
+  background-position: center;
+  background-size: 60%;
+  border: solid 4px #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 3px 0 #636363;
+  width: 66px;
+  height: 66px;
+  position: relative;
+}
+
+.fs-person-portrait__portrait:before {
+  content: '';
+  position: absolute;
+  background-position: inherit;
+  background-size: inherit;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.fs-person-portrait__image {
+  position: relative;
+}
+
+.fs-person-portrait__gender-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+
+/**
+ * Style variations
+ */
+.fs-person {
 
   // INLINE
   &--inline {
 
-    .person-vitals__name {
+    .fs-person-vitals__name {
       display: table-cell;
       vertical-align: top;
     }
 
-    .person-vitals__person-details {
+    .fs-person-vitals__fs-person-details {
       display: table-cell;
       vertical-align: middle;
     }
 
-    .person-vitals__vitals-container {
+    .fs-person-details__container {
       margin-left: 30px;
     }
 
-    .person-info__person-portrait {
+    .fs-person-portrait__container {
       display: none;
     }
   }
@@ -210,39 +284,39 @@ background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz
   // STACKED
   &--stacked {
 
-    .person-info__person-portrait,
-    .person-info__person-info {
+    .fs-person-portrait__container,
+    .fs-person-portrait__gender-wrapper {
       display: table-row;
       text-align: center;
     }
 
-    .person-portrait__portrait {
+    .fs-person-portrait__portrait {
       margin: 0 auto;
     }
 
-    .person-info__person-gender {
+    .fs-person-gender__container {
       display: none;
     }
 
-    .person-vitals__person-details {
+    .fs-person-vitals__fs-person-details {
       left: 50%;
       position: relative;
       float: left;
     }
 
-    .person-vitals__vitals-container {
+    .fs-person-details__container {
       left: -50%;
       position: relative;
       float: left;
     }
 
-    .person-vitals__name:not(.person-vitals__name--sinotypic) {
+    .fs-person-vitals__name:not(.fs-person-vitals__name--sinotypic) {
 
-      .person-vitals__name--split {
+      .fs-person-vitals__name--split {
         display: inline;
       }
 
-      .person-vitals__name-full {
+      .fs-person-vitals__name-full {
         display: none;
       }
     }
@@ -252,7 +326,7 @@ background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz
   &--dark {
     color: #ffffff;
 
-    .person-portrait__portrait {
+    .fs-person-portrait__portrait {
       background-color: #57585a;
       border-color: #6c6d6f;
       box-shadow: none;
@@ -274,7 +348,7 @@ background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz
   // COUPLE
   &--husband, &--wife {
 
-    .person-gender__image:before {
+    .fs-person-gender__image:before {
       content: '';
       width: 8px;
       height: 26px;
@@ -285,7 +359,7 @@ background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz
     }
   }
 
-  &--husband .person-gender__image:before {
+  &--husband .fs-person-gender__image:before {
     border-bottom: 0;
     top: 50%;
   }
@@ -293,67 +367,9 @@ background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz
   &--wife {
     margin-top: 5px;
 
-    .person-gender__image:before {
+    .fs-person-gender__image:before {
       border-top: 0;
       bottom: 50%;
     }
-  }
-}
-
-.person-info__person-portrait {
-  display: table-cell;
-  width: 85px;
-}
-
-.person-portrait__portrait {
-  overflow: hidden;
-  background-color: #e0e0e0;
-  background-position: center;
-  background-size: 60%;
-  border: solid 4px #fff;
-  border-radius: 50%;
-  box-shadow: 0 2px 3px 0 #636363;
-  width: 66px;
-  height: 66px;
-  position: relative;
-}
-
-.person-portrait__portrait:before {
-  content: '';
-  position: absolute;
-  background-position: inherit;
-  background-size: inherit;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 100%;
-}
-
-.person-portrait__image {
-  position: relative;
-}
-
-.person-info__person-gender {
-  display: table-cell;
-  width: 0;
-
-  &.small {
-    width: 15px;
-  }
-
-  &.medium {
-    vertical-align: middle;
-    width: 30px;
-  }
-}
-
-.person-gender__image {
-  vertical-align: middle;
-  display: inline-block;
-  position: relative;
-
-  &[class*=fs-icon-small] {
-    vertical-align: top;
-    margin-top: 7px;
   }
 }

@@ -15,7 +15,7 @@ angular.module('ngFsComponents', ['ngSanitize'])
       // instead of duplicating the '.person-vitals__name' content just to add a wrapper anchor
       // with an ng-switch, we'll just append it to the DOM in the link function
       if (scope.options.openPersonCard) {
-        var name = element.find('.person-vitals__name');
+        var name = element.find('.fs-person-vitals__name');
         var nameContent = name.html();
         name.empty();
 
@@ -28,11 +28,11 @@ angular.module('ngFsComponents', ['ngSanitize'])
   };
 }])
 
-.directive('fsPersonInfo', function() {
+.directive('fsPersonGender', function() {
   return {
     restrict: 'E',
     replace: true,
-    template: templateList.personInfo,
+    template: templateList.personGender,
     scope: {
       person: '=',
       config: '&'
@@ -63,7 +63,7 @@ angular.module('ngFsComponents', ['ngSanitize'])
     },
     compile: function(tElement, tAttrs) {
       // since data-config must be a string, we need to append the attrs string to fs-person-vitals
-      tElement.find('fs-person-info').attr('data-config', tAttrs.config);
+      tElement.find('fs-person-gender').attr('data-config', tAttrs.config);
       return this.link;
     }
   };
@@ -84,7 +84,7 @@ angular.module('ngFsComponents', ['ngSanitize'])
     },
     compile: function(tElement, tAttrs) {
       // since data-config must be a string, we need to append the attrs string to fs-person-vitals
-      tElement.find('fs-person-info').attr('data-config', tAttrs.config);
+      tElement.find('fs-person-gender').attr('data-config', tAttrs.config);
       return this.link;
     }
   };

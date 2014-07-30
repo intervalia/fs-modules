@@ -1,10 +1,10 @@
-<div class="person-info">
-  <div class="person-info__person-portrait">
-    <div class="person-portrait__portrait fs-icon-before-portrait-{{person.gender | lowercase}}">
-      <img class="person-portrait__image" ng-if="person.portraitUrl" ng-src="{{person.portraitUrl}}" data-test="portrait">
+<div class="fs-person-portrait">
+  <div class="fs-person-portrait__container">
+    <div class="fs-person-portrait__portrait fs-icon-before-portrait-{{person.gender | lowercase}}">
+      <img class="fs-person-portrait__image" ng-if="person.portraitUrl" ng-src="{{person.portraitUrl}}" data-test="portrait">
     </div>
   </div>
-  <div class="person-info__person-info">
-    <fs-person-info data-person="person" data-options="options"></fs-person-info>
+  <div class="fs-person-portrait__gender-wrapper">
+    <fs-person-gender data-person="person" data-options="options"></fs-person-gender>
   </div>
 </div>

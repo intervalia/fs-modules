@@ -37,7 +37,7 @@ window.fsComponents = (function(module) {
 
     // add the person card link
     if (options.openPersonCard) {
-      var name = $template.find('.person-vitals__name');
+      var name = $template.find('.fs-person-vitals__name');
       var nameContent = name.html();
       name.empty();
 
@@ -68,11 +68,11 @@ window.fsComponents = (function(module) {
    *
    * @returns {DOMElement}
    */
-  module.registerDirective('fsPersonInfo', ['person', 'options', function(person, options) {
+  module.registerDirective('fsPersonGender', ['person', 'options', function(person, options) {
     options = $.extend({}, defaultOptions, options);
 
     // convert the angular template
-    var template = templateList.personInfo;
+    var template = templateList.personGender;
     var $template = this.parseAngular(template, {person: person, options: options});
 
     return $template;
