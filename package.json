@@ -9,13 +9,13 @@
     "npm": "1.3.x"
   },
   "scripts": {},
-  "readme": "fs-components\n=============\n\nJavaScript and Angular components that work in conjunction with fs-styles\n",
+  "readme": "fs-modules\n=============\n\nJavaScript and Angular modules that work in conjunction with fs-styles\n",
   "readmeFilename": "README.md",
-  "description": "fs-components =============",
-  "_id": "fs-components@0.1.0",
+  "description": "fs-modules =============",
+  "_id": "fs-modules@0.2.0",
   "dist": {
     "shasum": "77d70f40b648596019030ac7db2efaeb7e89b1c2"
   },
-  "_resolved": "git+https://github.com/fs-webdev/fs-components.git#8313a7460cbf982d8b6d31afc73eead49063f9b2",
-  "_from": "fs-components@git+https://github.com/fs-webdev/fs-components.git"
+  "_resolved": "git+https://github.com/fs-webdev/fs-modules.git#8313a7460cbf982d8b6d31afc73eead49063f9b2",
+  "_from": "fs-components@git+https://github.com/fs-webdev/fs-modules.git"
 }
