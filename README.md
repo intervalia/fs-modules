@@ -1,4 +1,4 @@
-fs-components
+fs-modules
 =============
 
 JavaScript and Angular components that work in conjunction with fs-styles
