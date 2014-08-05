@@ -1,0 +1,15 @@
+#/usr/bin/env bash
+
+# fail fast
+set -o errexit
+set -o pipefail
+
+#./node_modules/frontier-build-tools/testScripts/run-mocha-local
+
+# non-angular tests
+echo "$(tput setaf 4)Running tests without angular$(tput sgr 0)"
+TARGET_BROWSER="PhantomJS" ./node_modules/.bin/karma start test/karma.conf.js --single-run
+
+# angular tests
+echo "\n$(tput setaf 4)Running tests with angular$(tput sgr 0)"
+TARGET_BROWSER="PhantomJS" ./node_modules/.bin/karma start test/ng.karma.conf.js --single-run

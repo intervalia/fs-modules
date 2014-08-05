@@ -1,11 +1,10 @@
-'use strict'
-
 /**
  * Functions for rendering a person.
  * @author Steven Lambert <steven.lambert@familysearch.com>
  * @team tree - tesseract
  */
-window.fsComponents = (function(module) {
+window.fsModules = (function(module, $) {
+  'use strict';
 
   var defaultOptions = {
     iconSize: 'medium'
@@ -20,9 +19,8 @@ window.fsComponents = (function(module) {
    * @property {string} [person.id]
    *
    * @param {object} options - How to render the person.
-   * @property {string}  [options.iconSize=medium] - Size of the gender icon (small,medium).
    * @property {boolean} [options.hideLifeSpan=false] - Hide the lifespan.
-   * @property {string}  [options.lifeSpan=short] - Show the short or the full lifeSpan.
+   * @property {string}  [options.lifeSpan=short] - Show the short or the full lifeSpan (short,long).
    * @property {boolean} [options.hideId=false] - Hide the person id.
    * @property {boolean} [options.openPersonCard=false] - Add a link to open the person card when the name is clicked.
    *
@@ -33,20 +31,7 @@ window.fsComponents = (function(module) {
 
     // convert the angular template
     var template = templateList.personVitals;
-    var $template = this.parseAngular(template, {person: person, options: options});
-
-    // add the person card link
-    if (options.openPersonCard) {
-      var name = $template.find('.fs-person-vitals__name');
-      var nameContent = name.html();
-      name.empty();
-
-      // taking the code directly from the angular side makes maintenance a bit easier since you can just copy paste
-      var link = '<a href="#view=ancestor&person={{person.id}}" data-cmd="openPersonCard" data-cmd-data=\'{"id": "{{person.id}}", "name": "{{person.name}}", "gender": "{{person.gender}}"}\'>' + nameContent + '</a>';
-      var $link = this.parseAngular(link, {person: person, options: options});
-
-      name.append($link);
-    }
+    var $template = this.parseTemplate(template, {person: person, options: options, lang: lang});
 
     return $template;
   }], {restrict: 'E', replace: true});
@@ -61,8 +46,9 @@ window.fsComponents = (function(module) {
    *
    * @param {object} options - How to render the person.
    * @property {string}  [options.iconSize=medium] - Size of the gender icon (small,medium).
+   * @property {boolean} [options.hideGender=false] - Hide the gender icon.
    * @property {boolean} [options.hideLifeSpan=false] - Hide the lifespan.
-   * @property {string}  [options.lifeSpan=short] - Show the short or the full lifeSpan.
+   * @property {string}  [options.lifeSpan=short] - Show the short or the full lifeSpan (short,long).
    * @property {boolean} [options.hideId=false] - Hide the person id.
    * @property {boolean} [options.openPersonCard=false] - Add a link to open the person card when the name is clicked.
    *
@@ -73,7 +59,7 @@ window.fsComponents = (function(module) {
 
     // convert the angular template
     var template = templateList.personGender;
-    var $template = this.parseAngular(template, {person: person, options: options});
+    var $template = this.parseTemplate(template, {person: person, options: options, lang: lang});
 
     return $template;
   }], {restrict: 'E', replace: true});
@@ -88,8 +74,9 @@ window.fsComponents = (function(module) {
    *
    * @param {object} options - How to render the person.
    * @property {string}  [options.iconSize=medium] - Size of the gender icon (small,medium).
+   * @property {boolean} [options.hideGender=false] - Hide the gender icon.
    * @property {boolean} [options.hideLifeSpan=false] - Hide the lifespan.
-   * @property {string}  [options.lifeSpan=short] - Show the short or the full lifeSpan.
+   * @property {string}  [options.lifeSpan=short] - Show the short or the full lifeSpan (short,long).
    * @property {boolean} [options.hideId=false] - Hide the person id.
    * @property {boolean} [options.openPersonCard=false] - Add a link to open the person card when the name is clicked.
    *
@@ -100,7 +87,7 @@ window.fsComponents = (function(module) {
 
     // convert the angular template
     var template = templateList.personPortrait;
-    var $template = this.parseAngular(template, {person: person, options: options});
+    var $template = this.parseTemplate(template, {person: person, options: options, lang: lang});
 
     return $template;
   }], {restrict: 'E', replace: true});
@@ -121,8 +108,9 @@ window.fsComponents = (function(module) {
    *
    * @param {object} options - How to render the couple.
    * @property {string}  [options.iconSize=medium] - Size of the gender icon (small,medium).
+   * @property {boolean} [options.hideGender=false] - Hide the gender icon.
    * @property {boolean} [options.hideLifeSpan=false] - Hide the lifespan.
-   * @property {string}  [options.lifeSpan=short] - Show the short or the full lifeSpan.
+   * @property {string}  [options.lifeSpan=short] - Show the short or the full lifeSpan (short,long).
    * @property {boolean} [options.hideId=false] - Hide the person id.
    * @property {boolean} [options.openPersonCard=false] - Add a link to open the person card when the name is clicked.
    *
@@ -133,10 +121,10 @@ window.fsComponents = (function(module) {
 
     // convert the angular template
     var template = templateList.coupleInfo;
-    var $template = this.parseAngular(template, {husband: husband, wife: wife, options: options});
+    var $template = this.parseTemplate(template, {husband: husband, wife: wife, options: options});
 
     return $template;
   }], {restrict: 'E', replace: true});
 
   return module;
-})(window.fsComponents || {});
+})(window.fsModules || {}, window.jQuery);

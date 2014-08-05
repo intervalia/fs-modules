@@ -1,6 +1,6 @@
 /**
  * Filter functions taken as needed from Angular.js source
- * https://github.com/angular/angular.js/blob/master/src/Angular.js
+ * @see {@link https://github.com/angular/angular.js/blob/master/src/Angular.js|Angular}
  */
 
 /**

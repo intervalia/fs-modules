@@ -1,26 +1,25 @@
-'use strict'
-
 /**
- * Functions for parsing angular templates into jquery DOM objects.
+ * Functions for parsing angular templates into jQuery DOM objects.
  * @author Steven Lambert <steven.lambert@familysearch.com>
  * @team tree - tesseract
  */
-window.fsComponents = (function(module) {
+window.fsModules = (function(module, angular, FS, $) {
+  'use strict';
 
   var $parse;
   // get angulars $parse so we can parse angular templates
-  if (window.angular && angular.injector) {
+  if (angular && angular.injector) {
     var $injector = angular.injector(['ng']);
     $parse = $injector.get('$parse');
   }
-  // use the isolated angular $parse (fs-components/parser.js)
+  // use the isolated angular $parse (fs-modules/parser.js)
   else if (module.parser) {
     $parse = module.parser;
   }
   else {
-    throw new Error('You must include \'fs-components/parser.js\' before \'fs-components.js\' to use this feature without angular.js.');
+    throw new Error('You must include \'fs-modules/parser.js\' before \'fs-modules.js\' to use this feature without angular.js.');
   }
-  var ngExp = /\{\{.*?\}\}/g;
+  var ngExp = /\{\{[^}]*\}\}/g;
 
   // default directive options
   var defaultOptions = {
@@ -28,34 +27,91 @@ window.fsComponents = (function(module) {
     replace: false
   };
 
-  // mapping function for angular directives
-  var ngAttrs = {
-    'ng-bind-html': function(obj) {
-      var attr = this.attr('ng-bind-html');
-      var parsed = $parse(attr);
-      var value = parsed(obj);
+  // cache of parsed expressions
+  var cache = {};
 
-      this.html(FS.htmlDecode(value)).removeAttr('ng-bind-html');
+  /**
+   * Mapping function for angular attribute directives
+   * @param {string} nodeName - The name of the attribute
+   * @param {object} object   - Used in place of $scope for parsing.
+   */
+  var ngAttrs = {
+    'fs-add-wrapper-if': function(nodeName, obj) {
+      var value = parse(this.attr(nodeName), obj);
+
+      if (!value) {
+        this.replaceWith(this.contents());
+      }
+      else {
+        this.removeAttr(nodeName);
+      }
     },
-    'ng-if': function(obj) {
-      var attr = this.attr('ng-if');
-      var parsed = $parse(attr);
-      var value = parsed(obj);
+
+    'ng-bind-html': function(nodeName, obj) {
+      var value = parse(this.attr(nodeName), obj);
+
+      this.html(FS.htmlDecode(value)).removeAttr(nodeName);
+    },
+
+    'ng-if': function(nodeName, obj) {
+      var value = parse(this.attr(nodeName), obj);
 
       if (!value) {
         this.remove();
       }
-
-      this.removeAttr('ng-if');
+      else {
+        this.removeAttr(nodeName);
+      }
     },
-    'ng-src': function(obj) {
-      var attr = this.attr('ng-src');  // this should already be parsed at this point
 
-      this.attr('src', attr);
+    'ng-src': function(nodeName) {
+      var attr = this.attr(nodeName);  // this should already be parsed at this point
 
-      this.removeAttr('ng-src');
+      this.attr('src', attr).removeAttr(nodeName);
+    },
+
+    'ng-class': function(nodeName, obj) {
+      var value = parse(this.attr(nodeName), obj);
+
+      /*
+       * ng-class can evaluate to 3 things:
+       * 1. string representing space delimited class names
+       * 2. an array
+       * 3. a map of class names to boolean values where the names of the properties whose values are truthy will be added as css classes to the element
+       * @see {@link https://docs.angularjs.org/api/ng/directive/ngClass|ngClass}
+       */
+      if (isString(value)) {
+        this.addClass(value);
+      }
+      else if (isArray(value)) {
+        for (var i = 0, len = value.length; i < len; i++) {
+          this.addClass(value[i]);
+        }
+      }
+      else {
+        forEach(value, function(val, key){
+          if (val) {
+            this.addClass(key);
+          }
+        }, this);
+      }
+
+      this.removeAttr(nodeName);
     }
   };
+
+  /**
+   * Returns the parsed expression function.
+   * @param {string} exp - The angular expression to parse.
+   * @param {object} obj  - Used in place of $scope for parsing.
+   */
+  function parse(exp, obj) {
+    if (!cache[exp]) {
+      cache[exp] = $parse(exp);
+    }
+
+    return cache[exp](obj);
+  }
 
   /**
    * Parse a registered directive from a template.
@@ -67,7 +123,7 @@ window.fsComponents = (function(module) {
     var data = $node.data();
     var attrsToTransfer = [];
     var scope = {};
-    var $template, attrName
+    var $template, attrName;
 
     // parse the nodes data attributes and use those for the directive function parameters
     for (var prop in data) {
@@ -86,15 +142,25 @@ window.fsComponents = (function(module) {
     $template = directive.func(scope);
 
     if (directive.replace) {
-      $node.replaceWith($template);
+      // replaceWith only works if the node has a parent
+      if ($node.parents().length) {
+        $node.replaceWith($template);
 
-      // transfer any classes from the directive to the new node
-      $template.addClass($node.attr('class'));
+        // transfer any classes from the directive to the new node
+        $template.addClass($node.attr('class'));
 
-      // transfer any properties not in the scope object from the old node to the new node
-      for (var i = 0, len = attrsToTransfer.length; i < len; i++) {
-        attrName = 'data-'+attrsToTransfer[i];
-        $template.attr(attrName, $node.attr(attrName));
+        // transfer any properties not in the scope object from the old node to the new node
+        for (var i = 0, len = attrsToTransfer.length; i < len; i++) {
+          attrName = 'data-'+attrsToTransfer[i];
+          $template.attr(attrName, $node.attr(attrName));
+        }
+      }
+      // can't have a replace on a root node
+      else {
+        var $compileMinErr = minErr('$compile');
+
+        throw $compileMinErr('tplrt',
+          'Template for directive \'{0}\' must have exactly one root element.', directive.name);
       }
     }
     else {
@@ -107,11 +173,11 @@ window.fsComponents = (function(module) {
 
   /**
    * Convert angular {{expressions}} to their associated value.
-   * @param {string} str - Template str to format.
+   * @param {string} str - Angular expression string to parse.
    * @param {object} obj - Used in place of $scope for parsing.
    * @returns {string} The parsed angular value.
    */
-  module.formatAngular = function(str, obj) {
+  module.parseExpression = function(str, obj) {
     var matches = str.match(ngExp) || [];
     var match, exp, parsed, value;
 
@@ -128,16 +194,16 @@ window.fsComponents = (function(module) {
   };
 
   /**
-   * Parse angular directives.
+   * Parse angular directive templates.
    * @param {string} str - Template str to parse.
    * @param {object} obj - Used in place of $scope for parsing.
    * @returns {jQueryDom} - A jQuery DOM element.
    */
-  module.parseAngular = function(str, obj) {
-    str = this.formatAngular(str, obj);
+  module.parseTemplate = function(str, obj) {
+    str = this.parseExpression(str, obj);
     var $root = $(str);
     var $nodes = $root.find('*').andSelf();
-    var $node, nodeName, camelName, directive, attrs, attr;
+    var $node, nodeName, camelName, directive, attrs, attr, attrName;
 
     // traverse the DOM
     for (var i = 0, len = $nodes.length; i < len; i++) {
@@ -155,15 +221,20 @@ window.fsComponents = (function(module) {
       for (var j = 0, length = attrs.length; j < length; j++) {
         attr = attrs[j];
 
-        // call ng attribute functions
-        if (ngAttrs[attr.nodeName]) {
-          ngAttrs[attr.nodeName].call($node, obj);
+        // strip x- and data- from the front of the element/attributes.
+        attrName = attr.nodeName.replace(/^data-|^x-/, '');
+
+        // allow for proper camelCasing
+        attrName = attrName.replace(/^ng:|^ng_/, 'ng-');
+
+        if (ngAttrs[attrName]) {
+          ngAttrs[attrName].call($node, attr.nodeName, obj);
         }
 
         // call a registered directive if the node name matches an attribute directive
-        camelName = $.camelCase(attr.nodeName);
+        camelName = $.camelCase(attrName);
         if ((directive = this.directives[camelName]) && directive.restrict.indexOf('A') !== -1) {
-          callDirective(directive, $node, obj)
+          callDirective(directive, $node, obj);
         }
       }
     }
@@ -174,13 +245,18 @@ window.fsComponents = (function(module) {
   /**
    * Register a new directive parser
    * Taken from http://toddmotto.com/angular-js-dependency-injection-annotation-process/
-   * @param {string} fnName  - The name of the directive in camel case.
+   * @param {string} fnName  - The camel case name of the directive.
    * @param {array}  fn      - Array of strings for each parameter, last value must be a function.
    * @param {object} options - The options for the directive {restrict, replace}
    */
   module.registerDirective = function(fnName, fn, options) {
     var $inject;
     options = $.extend({}, defaultOptions, options);
+
+    // we do not allow class directives since they are not apparent
+    if (options.restrict.indexOf('C') !== -1) {
+      throw new Error('Directives that are restricted by Class Name are not allowed because they obscure the fact that a template is being used on the element.');
+    }
 
     // save off the array parameter names for minification
     if (typeof fn !== 'function') {
@@ -204,6 +280,7 @@ window.fsComponents = (function(module) {
     // the array of function parameters into their corresponding variables
     var self = this;
     this.directives[fnName] = {
+      name: fnName,
       restrict: options.restrict,
       replace: options.replace,
       func: function(obj) {
@@ -218,4 +295,4 @@ window.fsComponents = (function(module) {
   };
 
   return module;
-})(window.fsComponents || {});
+})(window.fsModules || {}, window.angular, window.FS, window.jQuery);

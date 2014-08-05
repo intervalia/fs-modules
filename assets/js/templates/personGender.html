@@ -1,6 +1,6 @@
 <div class="fs-person-gender">
-  <div class="fs-person-gender__container fs-person-gender--{{options.iconSize}}" ng-if="!options.hideGender">
-    <div class="fs-person-gender__image fs-icon-{{options.iconSize}}-{{person.gender | lowercase}}"></div>
+  <div class="fs-person-gender__container" ng-class="(!options.hideGender ? 'fs-person-gender--'+options.iconSize : '')">
+    <div class="fs-person-gender__image" ng-class="(!options.hideGender ? 'fs-icon-'+options.iconSize+'-'+(person.gender || 'unknown') : 'fs-icon-'+options.iconSize) | lowercase"></div>
   </div>
   <fs-person-vitals data-person="person" data-options="options"></fs-person-vitals>
 </div>

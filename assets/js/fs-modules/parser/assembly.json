@@ -1,7 +1,7 @@
 {
   "files": [
     "./filters.js",
-    "./helpers.js",
+    "../helpers.js",
     "./parse.js"
   ],
   "simpleWrap": true

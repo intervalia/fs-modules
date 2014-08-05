@@ -1,6 +1,6 @@
 /**
  * Helper functions taken as needed from Angular.js source
- * https://github.com/angular/angular.js/blob/master/src/Angular.js
+ * @see {@link https://github.com/angular/angular.js/blob/master/src/Angular.js|Angular}
  */
 
 /**
@@ -35,6 +35,20 @@ var trim = (function() {
 })();
 
 function valueFn(value) {return function() {return value;};}
+
+/**
+ * @ngdoc function
+ * @name angular.isDefined
+ * @module ng
+ * @kind function
+ *
+ * @description
+ * Determines if a reference is defined.
+ *
+ * @param {*} value Reference to check.
+ * @returns {boolean} True if `value` is defined.
+ */
+function isDefined(value){return typeof value !== 'undefined';}
 
 /**
  * @ngdoc function

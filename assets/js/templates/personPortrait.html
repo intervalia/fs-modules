@@ -1,6 +1,6 @@
 <div class="fs-person-portrait">
   <div class="fs-person-portrait__container">
-    <div class="fs-person-portrait__portrait fs-icon-before-portrait-{{person.gender | lowercase}}">
+    <div class="fs-person-portrait__portrait fs-icon-before-portrait-{{(person.gender || 'unknown') | lowercase}}">
       <img class="fs-person-portrait__image" ng-if="person.portraitUrl" ng-src="{{person.portraitUrl}}" data-test="portrait">
     </div>
   </div>

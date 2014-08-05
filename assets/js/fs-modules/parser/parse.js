@@ -1,6 +1,6 @@
 /**
  * $parse function taken directly from Angular.js source
- * https://github.com/angular/angular.js/blob/master/src/ng/parse.js
+ * @see {@link https://github.com/angular/angular.js/blob/master/src/ng/parse.js|Angular.parse}
  */
 'use strict'
 
@@ -1082,6 +1082,6 @@ function $ParseProvider() {
   };
 }
 
-// add the parser to fsComponents
-window.fsComponents = window.fsComponents || {};
-fsComponents.parser = new $ParseProvider().$get();
+// add the parser to fsModules
+window.fsModules = window.fsModules || {};
+fsModules.parser = new $ParseProvider().$get();
