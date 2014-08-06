@@ -3,7 +3,7 @@
  * @author Steven Lambert <steven.lambert@familysearch.com>
  * @team tree - tesseract
  */
-window.fsModules = (function(module, $) {
+window.fsModules = (function(module) {
   'use strict';
 
   var defaultOptions = {
@@ -27,13 +27,13 @@ window.fsModules = (function(module, $) {
    * @returns {DOMElement}
    */
   module.registerDirective('fsPersonVitals', ['person', 'options', function(person, options) {
-    options = $.extend({}, defaultOptions, options);
+    options = extend({}, defaultOptions, options);
 
     // convert the angular template
-    var template = templateList.personVitals;
-    var $template = this.parseTemplate(template, {person: person, options: options, lang: lang});
+    var templateStr = templateList.personVitals;
+    var template = this.parseTemplate(templateStr, {person: person, options: options, lang: lang});
 
-    return $template;
+    return template;
   }], {restrict: 'E', replace: true});
 
   /**
@@ -55,13 +55,13 @@ window.fsModules = (function(module, $) {
    * @returns {DOMElement}
    */
   module.registerDirective('fsPersonGender', ['person', 'options', function(person, options) {
-    options = $.extend({}, defaultOptions, options);
+    options = extend({}, defaultOptions, options);
 
     // convert the angular template
-    var template = templateList.personGender;
-    var $template = this.parseTemplate(template, {person: person, options: options, lang: lang});
+    var templateStr = templateList.personGender;
+    var template = this.parseTemplate(templateStr, {person: person, options: options, lang: lang});
 
-    return $template;
+    return template;
   }], {restrict: 'E', replace: true});
 
   /**
@@ -83,13 +83,13 @@ window.fsModules = (function(module, $) {
    * @returns {DOMElement}
    */
   module.registerDirective('fsPersonPortrait', ['person', 'options', function(person, options) {
-    options = $.extend({}, defaultOptions, options);
+    options = extend({}, defaultOptions, options);
 
     // convert the angular template
-    var template = templateList.personPortrait;
-    var $template = this.parseTemplate(template, {person: person, options: options, lang: lang});
+    var templateStr = templateList.personPortrait;
+    var template = this.parseTemplate(templateStr, {person: person, options: options, lang: lang});
 
-    return $template;
+    return template;
   }], {restrict: 'E', replace: true});
 
   /**
@@ -117,13 +117,13 @@ window.fsModules = (function(module, $) {
    * @returns {DOMElement}
    */
   module.registerDirective('fsCoupleInfo', ['husband', 'wife', 'options', function(husband, wife, options) {
-    options = $.extend({}, defaultOptions, options);
+    options = extend({}, defaultOptions, options);
 
     // convert the angular template
-    var template = templateList.coupleInfo;
-    var $template = this.parseTemplate(template, {husband: husband, wife: wife, options: options});
+    var templateStr = templateList.coupleInfo;
+    var template = this.parseTemplate(templateStr, {husband: husband, wife: wife, options: options});
 
-    return $template;
+    return template;
   }], {restrict: 'E', replace: true});
 
   return module;

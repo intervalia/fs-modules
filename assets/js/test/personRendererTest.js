@@ -5,7 +5,7 @@ var isAngularTest = window.isAngularTest || false;
 
 var person = {
   name: 'John Doe',
-  gender: 'FEMALE',
+  gender: 'MALE',
   id: '1234-567',
   lifeSpan: '1900-1960',
   fullLifeSpan: '1 January 1900 &ndash; 1 December 1960',
@@ -21,11 +21,32 @@ var person = {
   portraitUrl: 'http://familysearch.org/portrait'
 };
 
-var noNamePerson = $.extend({}, person, {name: null});
-var noIdPerson = $.extend({}, person, {id: null});
-var noNameConclusionPerson = $.extend({}, person, {nameConclusion: null});
-var noPotriatPerson = $.extend({}, person, {portraitUrl: null});
+var person2 = {
+  name: 'Jane Doe',
+  gender: 'FEMALE',
+  id: 'bdfg-hjk',
+  lifeSpan: '1920-1980',
+  fullLifeSpan: '11 January 1920 &ndash; 11 December 1980',
+  nameConclusion: {
+    details: {
+      style: 'EUROTYPIC',
+      nameForms: [{
+        givenPart: 'Jane',
+        familyPart: 'Doe'
+      }]
+    }
+  },
+  portraitUrl: 'http://familysearch.org/portrait_female'
+};
 
+var noNamePerson = fsModules.extend({}, person, {name: null});
+var noIdPerson = fsModules.extend({}, person, {id: null});
+var noNameConclusionPerson = fsModules.extend({}, person, {nameConclusion: null});
+var noPotriatPerson = fsModules.extend({}, person, {portraitUrl: null});
+
+/**
+ * personRenderer
+ */
 describe('personRenderer', function () {
   var $template;
 
@@ -42,15 +63,15 @@ describe('personRenderer', function () {
     }));
 
     function compileDirective(template) {
-      $template = $compile(template)($scope);
+      $template = $compile(template)($scope)[0];
       $scope.$digest();
     }
   }
 
   /**
-   * fsPersonVitals
+   * fsModules.fsPersonVitals
    */
-  describe('fsPersonVitals', function() {
+  describe('fsModules.fsPersonVitals', function() {
 
     it('should output the correct values with default options', function() {
       if (isAngularTest) {
@@ -61,14 +82,14 @@ describe('personRenderer', function () {
         $template = fsModules.fsPersonVitals(person);
       }
 
-      var $personCard = $template.find('a[data-cmd="openPersonCard"]');
-      var fullName = $template.find('[data-test="full-name"]').text();
-      var givenName = $template.find('[data-test="given-name"]').text();
-      var familyName = $template.find('[data-test="family-name"]').text();
-      var pid = $template.find('[data-test="pid"]').text();
-      var lifeSpan = $template.find('[data-test="lifeSpan"]').text();
+      var personCard = $template.querySelector('a[data-cmd="openPersonCard"]');
+      var fullName = $template.querySelector('[data-test="full-name"]').innerText;
+      var givenName = $template.querySelector('[data-test="given-name"]').innerText;
+      var familyName = $template.querySelector('[data-test="family-name"]').innerText;
+      var pid = $template.querySelector('[data-test="pid"]').innerText;
+      var lifeSpan = $template.querySelector('[data-test="lifeSpan"]').innerText;
 
-      expect($personCard.length).to.equal(0);
+      expect(personCard).to.be.a('null');
       expect(fullName).to.equal(person.name);
       expect(givenName).to.equal('John');
       expect(familyName).to.equal('Doe');
@@ -85,7 +106,7 @@ describe('personRenderer', function () {
         $template = fsModules.fsPersonVitals(noNamePerson);
       }
 
-      var fullName = $template.find('[data-test="full-name"]').text();
+      var fullName = $template.querySelector('[data-test="full-name"]').innerText;
 
       expect(fullName).to.equal('[Unknown Name]');
     });
@@ -99,18 +120,18 @@ describe('personRenderer', function () {
         $template = fsModules.fsPersonVitals(person, {hideId: true});
       }
 
-      var $personCard = $template.find('a[data-cmd="openPersonCard"]');
-      var fullName = $template.find('[data-test="full-name"]').text();
-      var givenName = $template.find('[data-test="given-name"]').text();
-      var familyName = $template.find('[data-test="family-name"]').text();
-      var $pid = $template.find('[data-test="pid"]');
-      var lifeSpan = $template.find('[data-test="lifeSpan"]').text();
+      var personCard = $template.querySelector('a[data-cmd="openPersonCard"]');
+      var fullName = $template.querySelector('[data-test="full-name"]').innerText;
+      var givenName = $template.querySelector('[data-test="given-name"]').innerText;
+      var familyName = $template.querySelector('[data-test="family-name"]').innerText;
+      var pid = $template.querySelector('[data-test="pid"]');
+      var lifeSpan = $template.querySelector('[data-test="lifeSpan"]').innerText;
 
-      expect($personCard.length).to.equal(0);
+      expect(personCard).to.be.a('null');
       expect(fullName).to.equal(person.name);
       expect(givenName).to.equal('John');
       expect(familyName).to.equal('Doe');
-      expect($pid.length).to.equal(0);
+      expect(pid).to.be.a('null');;
       expect(lifeSpan).to.equal(person.lifeSpan);
     });
 
@@ -123,9 +144,9 @@ describe('personRenderer', function () {
         $template = fsModules.fsPersonVitals(noIdPerson);
       }
 
-      var $pid = $template.find('[data-test="pid"]');
+      var pid = $template.querySelector('[data-test="pid"]');
 
-      expect($pid.length).to.equal(0);
+      expect(pid).to.be.a('null');
     });
 
     it('should not include the lifeSpan if options.hideLifeSpan is true', function() {
@@ -137,19 +158,19 @@ describe('personRenderer', function () {
         $template = fsModules.fsPersonVitals(person, {hideLifeSpan: true});
       }
 
-      var $personCard = $template.find('a[data-cmd="openPersonCard"]');
-      var fullName = $template.find('[data-test="full-name"]').text();
-      var givenName = $template.find('[data-test="given-name"]').text();
-      var familyName = $template.find('[data-test="family-name"]').text();
-      var pid = $template.find('[data-test="pid"]').text();
-      var $lifeSpan = $template.find('[data-test="lifeSpan"]');
+      var personCard = $template.querySelector('a[data-cmd="openPersonCard"]');
+      var fullName = $template.querySelector('[data-test="full-name"]').innerText;
+      var givenName = $template.querySelector('[data-test="given-name"]').innerText;
+      var familyName = $template.querySelector('[data-test="family-name"]').innerText;
+      var pid = $template.querySelector('[data-test="pid"]').innerText;
+      var lifeSpan = $template.querySelector('[data-test="lifeSpan"]');
 
-      expect($personCard.length).to.equal(0);
+      expect(personCard).to.be.a('null');
       expect(fullName).to.equal(person.name);
       expect(givenName).to.equal('John');
       expect(familyName).to.equal('Doe');
       expect(pid).to.equal(person.id);
-      expect($lifeSpan.length).to.equal(0);
+      expect(lifeSpan).to.be.a('null');
     });
 
     it('should not include the lifeSpan or id if options.hideLifeSpan and options.hideId are true', function() {
@@ -161,19 +182,19 @@ describe('personRenderer', function () {
         $template = fsModules.fsPersonVitals(person, {hideLifeSpan: true, hideId: true});
       }
 
-      var $personCard = $template.find('a[data-cmd="openPersonCard"]');
-      var fullName = $template.find('[data-test="full-name"]').text();
-      var givenName = $template.find('[data-test="given-name"]').text();
-      var familyName = $template.find('[data-test="family-name"]').text();
-      var $pid = $template.find('[data-test="pid"]');
-      var $lifeSpan = $template.find('[data-test="lifeSpan"]');
+      var personCard = $template.querySelector('a[data-cmd="openPersonCard"]');
+      var fullName = $template.querySelector('[data-test="full-name"]').innerText;
+      var givenName = $template.querySelector('[data-test="given-name"]').innerText;
+      var familyName = $template.querySelector('[data-test="family-name"]').innerText;
+      var pid = $template.querySelector('[data-test="pid"]');
+      var lifeSpan = $template.querySelector('[data-test="lifeSpan"]');
 
-      expect($personCard.length).to.equal(0);
+      expect(personCard).to.be.a('null');
       expect(fullName).to.equal(person.name);
       expect(givenName).to.equal('John');
       expect(familyName).to.equal('Doe');
-      expect($pid.length).to.equal(0);
-      expect($lifeSpan.length).to.equal(0);
+      expect(pid).to.be.a('null');
+      expect(lifeSpan).to.be.a('null');
     });
 
     it('should not include the given and family names if there is no nameConclusion', function() {
@@ -185,17 +206,17 @@ describe('personRenderer', function () {
         $template = fsModules.fsPersonVitals(noNameConclusionPerson);
       }
 
-      var $personCard = $template.find('a[data-cmd="openPersonCard"]');
-      var fullName = $template.find('[data-test="full-name"]').text();
-      var $givenName = $template.find('[data-test="given-name"]').text();
-      var $familyName = $template.find('[data-test="family-name"]').text();
-      var pid = $template.find('[data-test="pid"]').text();
-      var lifeSpan = $template.find('[data-test="lifeSpan"]').text();
+      var personCard = $template.querySelector('a[data-cmd="openPersonCard"]');
+      var fullName = $template.querySelector('[data-test="full-name"]').innerText;
+      var givenName = $template.querySelector('[data-test="given-name"]');
+      var familyName = $template.querySelector('[data-test="family-name"]');
+      var pid = $template.querySelector('[data-test="pid"]').innerText;
+      var lifeSpan = $template.querySelector('[data-test="lifeSpan"]').innerText;
 
-      expect($personCard.length).to.equal(0);
+      expect(personCard).to.be.a('null');
       expect(fullName).to.equal(person.name);
-      expect($givenName.length).to.equal(0);
-      expect($familyName.length).to.equal(0);
+      expect(givenName).to.be.a('null');
+      expect(familyName).to.be.a('null');
       expect(pid).to.equal(person.id);
       expect(lifeSpan).to.equal(person.lifeSpan);
     });
@@ -209,14 +230,14 @@ describe('personRenderer', function () {
         $template = fsModules.fsPersonVitals(person, {openPersonCard: true});
       }
 
-      var $personCard = $template.find('a[data-cmd="openPersonCard"]');
-      var fullName = $template.find('[data-test="full-name"]').text();
-      var givenName = $template.find('[data-test="given-name"]').text();
-      var familyName = $template.find('[data-test="family-name"]').text();
-      var pid = $template.find('[data-test="pid"]').text();
-      var lifeSpan = $template.find('[data-test="lifeSpan"]').text();
+      var personCard = $template.querySelector('a[data-cmd="openPersonCard"]');
+      var fullName = $template.querySelector('[data-test="full-name"]').innerText;
+      var givenName = $template.querySelector('[data-test="given-name"]').innerText;
+      var familyName = $template.querySelector('[data-test="family-name"]').innerText;
+      var pid = $template.querySelector('[data-test="pid"]').innerText;
+      var lifeSpan = $template.querySelector('[data-test="lifeSpan"]').innerText;
 
-      expect($personCard.length).to.equal(1);
+      expect(personCard).to.not.be.a('null');
       expect(fullName).to.equal(person.name);
       expect(givenName).to.equal('John');
       expect(familyName).to.equal('Doe');
@@ -233,14 +254,14 @@ describe('personRenderer', function () {
         $template = fsModules.fsPersonVitals(person, {lifeSpan: 'long'});
       }
 
-      var $personCard = $template.find('a[data-cmd="openPersonCard"]');
-      var fullName = $template.find('[data-test="full-name"]').text();
-      var givenName = $template.find('[data-test="given-name"]').text();
-      var familyName = $template.find('[data-test="family-name"]').text();
-      var pid = $template.find('[data-test="pid"]').text();
-      var lifeSpan = $template.find('[data-test="lifeSpan"]').text();
+      var personCard = $template.querySelector('a[data-cmd="openPersonCard"]');
+      var fullName = $template.querySelector('[data-test="full-name"]').innerText;
+      var givenName = $template.querySelector('[data-test="given-name"]').innerText;
+      var familyName = $template.querySelector('[data-test="family-name"]').innerText;
+      var pid = $template.querySelector('[data-test="pid"]').innerText;
+      var lifeSpan = $template.querySelector('[data-test="lifeSpan"]').innerText;
 
-      expect($personCard.length).to.equal(0);
+      expect(personCard).to.be.a('null');
       expect(fullName).to.equal(person.name);
       expect(givenName).to.equal('John');
       expect(familyName).to.equal('Doe');
@@ -251,9 +272,9 @@ describe('personRenderer', function () {
   });
 
   /**
-   * fsPersonGender
+   * fsModules.fsPersonGender
    */
-  describe('fsPersonGender', function() {
+  describe('fsModules.fsPersonGender', function() {
 
     it('should output the correct values with default options', function() {
       if (isAngularTest) {
@@ -264,14 +285,14 @@ describe('personRenderer', function () {
         $template = fsModules.fsPersonGender(person);
       }
 
-      var $personCard = $template.find('a[data-cmd="openPersonCard"]');
-      var fullName = $template.find('[data-test="full-name"]').text();
-      var givenName = $template.find('[data-test="given-name"]').text();
-      var familyName = $template.find('[data-test="family-name"]').text();
-      var pid = $template.find('[data-test="pid"]').text();
-      var lifeSpan = $template.find('[data-test="lifeSpan"]').text();
+      var personCard = $template.querySelector('a[data-cmd="openPersonCard"]');
+      var fullName = $template.querySelector('[data-test="full-name"]').innerText;
+      var givenName = $template.querySelector('[data-test="given-name"]').innerText;
+      var familyName = $template.querySelector('[data-test="family-name"]').innerText;
+      var pid = $template.querySelector('[data-test="pid"]').innerText;
+      var lifeSpan = $template.querySelector('[data-test="lifeSpan"]').innerText;
 
-      expect($personCard.length).to.equal(0);
+      expect(personCard).to.be.a('null');
       expect(fullName).to.equal(person.name);
       expect(givenName).to.equal('John');
       expect(familyName).to.equal('Doe');
@@ -288,27 +309,27 @@ describe('personRenderer', function () {
         $template = fsModules.fsPersonGender(person, {hideId: true});
       }
 
-      var $personCard = $template.find('a[data-cmd="openPersonCard"]');
-      var fullName = $template.find('[data-test="full-name"]').text();
-      var givenName = $template.find('[data-test="given-name"]').text();
-      var familyName = $template.find('[data-test="family-name"]').text();
-      var $pid = $template.find('[data-test="pid"]');
-      var lifeSpan = $template.find('[data-test="lifeSpan"]').text();
+      var personCard = $template.querySelector('a[data-cmd="openPersonCard"]');
+      var fullName = $template.querySelector('[data-test="full-name"]').innerText;
+      var givenName = $template.querySelector('[data-test="given-name"]').innerText;
+      var familyName = $template.querySelector('[data-test="family-name"]').innerText;
+      var pid = $template.querySelector('[data-test="pid"]');
+      var lifeSpan = $template.querySelector('[data-test="lifeSpan"]').innerText;
 
-      expect($personCard.length).to.equal(0);
+      expect(personCard).to.be.a('null');
       expect(fullName).to.equal(person.name);
       expect(givenName).to.equal('John');
       expect(familyName).to.equal('Doe');
-      expect($pid.length).to.equal(0);
+      expect(pid).to.be.a('null');
       expect(lifeSpan).to.equal(person.lifeSpan);
     });
 
   });
 
   /**
-   * fsPersonPortrait
+   * fsModules.fsPersonPortrait
    */
-  describe('fsPersonPortrait', function() {
+  describe('fsModules.fsPersonPortrait', function() {
 
     it('should output the correct values with default options', function() {
       if (isAngularTest) {
@@ -319,17 +340,17 @@ describe('personRenderer', function () {
         $template = fsModules.fsPersonPortrait(person);
       }
 
-      var $portrait = $template.find('img');
-      var $personCard = $template.find('a[data-cmd="openPersonCard"]');
-      var fullName = $template.find('[data-test="full-name"]').text();
-      var givenName = $template.find('[data-test="given-name"]').text();
-      var familyName = $template.find('[data-test="family-name"]').text();
-      var pid = $template.find('[data-test="pid"]').text();
-      var lifeSpan = $template.find('[data-test="lifeSpan"]').text();
+      var portrait = $template.querySelector('img');
+      var personCard = $template.querySelector('a[data-cmd="openPersonCard"]');
+      var fullName = $template.querySelector('[data-test="full-name"]').innerText;
+      var givenName = $template.querySelector('[data-test="given-name"]').innerText;
+      var familyName = $template.querySelector('[data-test="family-name"]').innerText;
+      var pid = $template.querySelector('[data-test="pid"]').innerText;
+      var lifeSpan = $template.querySelector('[data-test="lifeSpan"]').innerText;
 
-      expect($portrait.length).to.equal(1);
-      expect($portrait.attr('src')).to.equal(person.portraitUrl);
-      expect($personCard.length).to.equal(0);
+      expect(portrait).to.not.be.a('null');
+      expect(portrait.getAttribute('src')).to.equal(person.portraitUrl);
+      expect(personCard).to.be.a('null');
       expect(fullName).to.equal(person.name);
       expect(givenName).to.equal('John');
       expect(familyName).to.equal('Doe');
@@ -346,21 +367,21 @@ describe('personRenderer', function () {
         $template = fsModules.fsPersonPortrait(person, {hideId: true});
       }
 
-      var $portrait = $template.find('img');
-      var $personCard = $template.find('a[data-cmd="openPersonCard"]');
-      var fullName = $template.find('[data-test="full-name"]').text();
-      var givenName = $template.find('[data-test="given-name"]').text();
-      var familyName = $template.find('[data-test="family-name"]').text();
-      var $pid = $template.find('[data-test="pid"]');
-      var lifeSpan = $template.find('[data-test="lifeSpan"]').text();
+      var portrait = $template.querySelector('img');
+      var personCard = $template.querySelector('a[data-cmd="openPersonCard"]');
+      var fullName = $template.querySelector('[data-test="full-name"]').innerText;
+      var givenName = $template.querySelector('[data-test="given-name"]').innerText;
+      var familyName = $template.querySelector('[data-test="family-name"]').innerText;
+      var pid = $template.querySelector('[data-test="pid"]');
+      var lifeSpan = $template.querySelector('[data-test="lifeSpan"]').innerText;
 
-      expect($portrait.length).to.equal(1);
-      expect($portrait.attr('src')).to.equal(person.portraitUrl);
-      expect($personCard.length).to.equal(0);
+      expect(portrait).to.not.be.a('null');
+      expect(portrait.getAttribute('src')).to.equal(person.portraitUrl);
+      expect(personCard).to.be.a('null');
       expect(fullName).to.equal(person.name);
       expect(givenName).to.equal('John');
       expect(familyName).to.equal('Doe');
-      expect($pid.length).to.equal(0);
+      expect(pid).to.be.a('null');
       expect(lifeSpan).to.equal(person.lifeSpan);
     });
 
@@ -373,9 +394,91 @@ describe('personRenderer', function () {
         $template = fsModules.fsPersonPortrait(noPotriatPerson);
       }
 
-      var $portrait = $template.find('img');
+      var portrait = $template.querySelector('img');
 
-      expect($portrait.length).to.equal(0);
+      expect(portrait).to.be.a('null');
+    });
+
+  });
+
+  /**
+   * fsModules.fsCoupleInfo
+   */
+  describe('fsModules.fsCoupleInfo', function() {
+
+    it('should output the correct values with default options', function() {
+      if (isAngularTest) {
+        $scope.person = person;
+        $scope.person2 = person2;
+        compileDirective('<fs-couple-info data-husband="person" data-wife="person2"></fs-couple-info>');
+      }
+      else {
+        $template = fsModules.fsCoupleInfo(person, person2);
+      }
+
+      var personCard = $template.querySelectorAll('a[data-cmd="openPersonCard"]');
+      var fullNames = $template.querySelectorAll('[data-test="full-name"]');
+      var givenNames = $template.querySelectorAll('[data-test="given-name"]');
+      var familyNames = $template.querySelectorAll('[data-test="family-name"]');
+      var pids = $template.querySelectorAll('[data-test="pid"]');
+      var lifeSpans = $template.querySelectorAll('[data-test="lifeSpan"]');
+
+      expect(personCard.length).to.equal(0);
+
+      // test husband data
+      expect(fullNames[0].innerText).to.equal(person.name);
+      expect(givenNames[0].innerText).to.equal('John');
+      expect(familyNames[0].innerText).to.equal('Doe');
+      expect(pids[0].innerText).to.equal(person.id);
+      expect(lifeSpans[0].innerText).to.equal(person.lifeSpan);
+
+      // test wife data
+      expect(fullNames[1].innerText).to.equal(person2.name);
+      expect(givenNames[1].innerText).to.equal('Jane');
+      expect(familyNames[1].innerText).to.equal('Doe');
+      expect(pids[1].innerText).to.equal(person2.id);
+      expect(lifeSpans[1].innerText).to.equal(person2.lifeSpan);
+    });
+
+    it('should transfer options properly to both persons', function() {
+      if (isAngularTest) {
+        $scope.person = person;
+        $scope.person2 = person2;
+        compileDirective('<fs-couple-info data-husband="person" data-wife="person2" data-config="{hideId: true}"></fs-couple-info>');
+      }
+      else {
+        $template = fsModules.fsCoupleInfo(person, person2, {hideId: true});
+      }
+
+      var portrait = $template.querySelector('img');
+      var personCard = $template.querySelector('a[data-cmd="openPersonCard"]');
+      var fullName = $template.querySelector('[data-test="full-name"]').innerText;
+      var givenName = $template.querySelector('[data-test="given-name"]').innerText;
+      var familyName = $template.querySelector('[data-test="family-name"]').innerText;
+      var pid = $template.querySelector('[data-test="pid"]');
+      var lifeSpan = $template.querySelector('[data-test="lifeSpan"]').innerText;
+
+      var personCard = $template.querySelectorAll('a[data-cmd="openPersonCard"]');
+      var fullNames = $template.querySelectorAll('[data-test="full-name"]');
+      var givenNames = $template.querySelectorAll('[data-test="given-name"]');
+      var familyNames = $template.querySelectorAll('[data-test="family-name"]');
+      var pids = $template.querySelectorAll('[data-test="pid"]');
+      var lifeSpans = $template.querySelectorAll('[data-test="lifeSpan"]');
+
+      expect(personCard.length).to.equal(0);
+      expect(pids.length).to.equal(0);
+
+      // test husband data
+      expect(fullNames[0].innerText).to.equal(person.name);
+      expect(givenNames[0].innerText).to.equal('John');
+      expect(familyNames[0].innerText).to.equal('Doe');
+      expect(lifeSpans[0].innerText).to.equal(person.lifeSpan);
+
+      // test wife data
+      expect(fullNames[1].innerText).to.equal(person2.name);
+      expect(givenNames[1].innerText).to.equal('Jane');
+      expect(familyNames[1].innerText).to.equal('Doe');
+      expect(lifeSpans[1].innerText).to.equal(person2.lifeSpan);
     });
 
   });
