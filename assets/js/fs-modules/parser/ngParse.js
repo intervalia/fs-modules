@@ -1084,4 +1084,4 @@ function $ParseProvider() {
 
 // add the parser to fsModules
 window.fsModules = window.fsModules || {};
-fsModules.parser = new $ParseProvider().$get();
+fsModules.ngParser = new $ParseProvider().$get();

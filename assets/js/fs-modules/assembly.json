@@ -1,6 +1,6 @@
 {
   "files": [
-    "./helpers.js",
+    "./ngHelpers.js",
     "./module.js",
     "./personRenderer.js"
   ],

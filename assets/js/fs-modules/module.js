@@ -12,12 +12,12 @@ window.fsModules = (function(module, angular, FS) {
     var $injector = angular.injector(['ng']);
     $parse = $injector.get('$parse');
   }
-  // use the isolated angular $parse (fs-modules/parser.js)
-  else if (module.parser) {
-    $parse = module.parser;
+  // use the isolated angular $parse (fs-modules/ngParser.js)
+  else if (module.ngParser) {
+    $parse = module.ngParser;
   }
   else {
-    throw new Error('You must include \'fs-modules/parser.js\' before \'fs-modules.js\' to use this feature without angular.js.');
+    throw new Error('You must include \'fs-modules/ngParser.js\' before \'fs-modules.js\' to use this feature without angular.js.');
   }
   var ngExp = /\{\{[^}]*\}\}/g;
   var dashAlpha = /-([a-z])/gi;
