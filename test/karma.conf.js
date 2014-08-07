@@ -6,7 +6,7 @@ module.exports = function(config) {
   masterConf(config, {
     projectPath: projectPath,
     testFiles: [
-      'assets/js/fs-modules/parser/assembly.json',
+      'assets/js/fs-modules/ngParser/assembly.json',
       'assets/js/fs-modules/assembly.json',
       'assets/js/fs-modules/test/*Test.js',
       'assets/js/test/*Test.js'
