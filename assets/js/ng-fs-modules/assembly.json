@@ -2,5 +2,8 @@
   "files": [
     "./ngPersonRenderer.js"
   ],
-  "simpleWrap": true
+  "simpleWrap": true,
+  "templatePath": "../templates",
+  "localePath": "../locales",
+  "localeFileName": "fs-modules"
 }

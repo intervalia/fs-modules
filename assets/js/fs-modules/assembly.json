@@ -4,5 +4,7 @@
     "./module.js",
     "./personRenderer.js"
   ],
-  "simpleWrap": true
+  "simpleWrap": true,
+  "templatePath": "../templates",
+  "localePath": "../locales"
 }
