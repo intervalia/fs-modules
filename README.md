@@ -120,7 +120,7 @@ var dom = fsModules.fsPerosnPortrait(person, {iconSize: 'small'});
 
 Parameters are the same as the Angular directive of the same name.
 
-### fsModules.fsCouipleInfo
+### fsModules.fsCoupleInfo
 
 Usage:
 ```javascript
